@@ -101,17 +101,19 @@ function handleFormSubmit(event) {
   const imageUrl = "";
 
  
-  const newCustomer = new Customer(fullName, password, dob, gender, orderType, orderOption, imageUrl, phone);
+let newCustomer = new Customer(fullName, password, dob, gender, orderType, orderOption, imageUrl, phone);
+let validationError = validateInputs(newCustomer);
+if(validationError) {
+   alert(validationError);
+   return;
+  }
 
   customers.push(newCustomer);
 
   localStorage.setItem("customers", JSON.stringify(customers));
 
-  const validationError = validateInputs(newCustomer);
-  if (validationError) {
-   console.log(validationError);
-   
-  }
+  
+  
   renderCustomer(newCustomer);
 
 
@@ -120,8 +122,9 @@ function handleFormSubmit(event) {
 
 
 document.addEventListener("DOMContentLoaded", () => {
+  
   const storedCustomers = JSON.parse(localStorage.getItem("customers")) || [];
-
+ 
 
   storedCustomers.forEach((customerData) => {
     const customer = new Customer(
@@ -135,7 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
       customerData.phone
     );
     customers.push(customer);
-    renderCustomer(customer);
+    renderCustomer(customer); 
   });
 });
 
