@@ -14,6 +14,39 @@ function Customer(fullName, password, dob, gender, orderType, orderOption, image
 }
 
 
+function validateInputs({ fullName, password, dob, phone }) {
+
+  const ex = /\s/;
+if(ex.test(fullName)){
+  return( "must not contain spaces");
+}
+
+const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{9,}$/;
+  if (!passwordRegex.test(password)) {
+    return( "Password must be at least 9 characters long, include an uppercase letter, a number, and a special character.");
+  }
+  const dobRegex = /^\d{4}-\d{2}-\d{2}$/;
+  if (!dobRegex.test(dob)) {
+    return( "Birthday must be in YYYY-MM-DD format.");
+  }
+
+  const phoneRegex = /^07\d{8}$/;
+  if (!phoneRegex.test(phone)) {
+    return ( "Phone number must be 10 digits and start with 07.");
+  }
+return null;
+
+}
+
+
+
+
+
+
+
+
+
+
 function renderCustomer(customer) {
   const customerCards = document.getElementById("customerCards");
   
@@ -74,7 +107,11 @@ function handleFormSubmit(event) {
 
   localStorage.setItem("customers", JSON.stringify(customers));
 
-  
+  const validationError = validateInputs(newCustomer);
+  if (validationError) {
+   console.log(validationError);
+   
+  }
   renderCustomer(newCustomer);
 
 
